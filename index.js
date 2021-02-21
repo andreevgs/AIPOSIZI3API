@@ -11,8 +11,8 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/public', express.static(__dirname + '/public'));
 
-app.use('/subdivisions', subdivisionsRouter);
-app.use('/repairs', repairsRouter);
+app.use('/api/subdivisions', subdivisionsRouter);
+app.use('/api/repairs', repairsRouter);
 
 app.listen(port, () => {
     console.log(`Express web app available at localhost: ${port}`);

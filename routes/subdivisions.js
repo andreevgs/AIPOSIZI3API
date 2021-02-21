@@ -4,9 +4,6 @@ const pg = require('pg');
 const fs = require('fs');
 
 const DB_ACCESS = require('../config').DB_ACCESS;
-const createLinkSubdivision = require('../api/other/HTMLCreators').createLinkSubdivision;
-const createOptionsSubdivisions = require('../api/other/HTMLCreators').createOptionsSubdivisions;
-const createOptionsEmployees = require('../api/other/HTMLCreators').createOptionsEmployees;
 
 const pool = new pg.Pool(DB_ACCESS);
 
