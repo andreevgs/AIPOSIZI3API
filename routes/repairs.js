@@ -3,10 +3,11 @@ const router = express();
 const pg = require('pg');
 const fs = require('fs');
 const DB_ACCESS = require('../config').DB_ACCESS;
+const authJwt = require('../middleware/authJWT');
 
 const pool = new pg.Pool(DB_ACCESS);
 
-router.get('/employees', (req, res) => {
+router.get('/employees', authJwt.verifyToken, (req, res) => {
     pool.connect((err, client, done) => {
         if (err) {
             res.json({error: 'Server error'});
@@ -23,9 +24,10 @@ router.get('/employees', (req, res) => {
             res.json(result);
         });
     });
+    
 });
 
-router.post('/employees/add', (req, res) => {
+router.post('/employees/add', authJwt.verifyToken, (req, res) => {
     pool.connect((err, client, done) => {
         if (err) {
             res.json({error: 'Server error'});
@@ -38,13 +40,14 @@ router.post('/employees/add', (req, res) => {
                 return console.error('error happened during query', err);
             }
             console.log('employee is added');
+            console.log('req on api: ', req.body);
             fs.appendFileSync(__dirname + '/../logs.txt', 'employee is added\n');
-            res.json({status: 'success'});
+            res.json({status: 1});
         });
     });
 });
 
-router.get('/spares', (req, res) => {
+router.get('/spares', authJwt.verifyToken, (req, res) => {
     pool.connect((err, client, done) => {
         if (err) {
             res.json({error: 'Server error'});
@@ -63,7 +66,7 @@ router.get('/spares', (req, res) => {
     });
 });
 
-router.get('/spares/add', (req, res) => {
+router.get('/spares/add', authJwt.verifyToken, (req, res) => {
     pool.connect((err, client, done) => {
         if (err) {
             res.json({error: 'Server error'});
@@ -80,7 +83,7 @@ router.get('/spares/add', (req, res) => {
     });
 });
 
-router.post('/spares/add', (req, res) => {
+router.post('/spares/add', authJwt.verifyToken, (req, res) => {
     pool.connect((err, client, done) => {
         if (err) {
             res.json({error: 'Server error'});
@@ -94,12 +97,12 @@ router.post('/spares/add', (req, res) => {
             }
             console.log('spare is added');
             fs.appendFileSync(__dirname + '/../logs.txt', 'spare is added\n');
-            res.json({status: 'success'});
+            res.json({status: 1});
         });
     });
 });
 
-router.get('/technics', (req, res) => {
+router.get('/technics', authJwt.verifyToken, (req, res) => {
     pool.connect((err, client, done) => {
         if (err) {
             res.json({error: 'Server error'});
@@ -116,13 +119,13 @@ router.get('/technics', (req, res) => {
                     res.json({error: 'Server error'});
                     return console.error('error happened during query', err);
                 }
-                res.json(result);
+                res.json({result_max: result_max, result: result});
             });
         });
     });
 });
 
-router.get('/technics/:id/history', (req, res) => {
+router.get('/technics/:id/history', authJwt.verifyToken, (req, res) => {
     pool.connect((err, client, done) => {
         if (err) {
             res.json({error: 'Server error'});
@@ -142,7 +145,7 @@ router.get('/technics/:id/history', (req, res) => {
     });
 });
 
-router.get('/technics/:id/done', (req, res) => {
+router.get('/technics/:id/done', authJwt.verifyToken, (req, res) => {
     pool.connect((err, client, done) => {
         if (err) {
             res.json({error: 'Server error'});
@@ -154,7 +157,7 @@ router.get('/technics/:id/done', (req, res) => {
                 res.json({error: 'Server error'});
                 return console.error('error happened during query', err);
             }
-            res.json({status: 'success'});
+            res.json({status: 1});
         });
     });
 });

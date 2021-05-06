@@ -4,3 +4,5 @@ exports.DB_ACCESS = {
     password: process.env.DB_PASS,
     port: process.env.DB_PORT,
 }
+
+exports.DB_ACCESS_LINK = 'postgres://postgres:12042001@localhost:5432/PBZLR';
